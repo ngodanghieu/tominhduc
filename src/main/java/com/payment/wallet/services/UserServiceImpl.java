@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -35,19 +34,19 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public ResponseEntity<?> register(UserRequest userRequest) {
+    public String register(UserRequest userRequest) {
         User user = userRepository.findByPhone(userRequest.getPhonenumber());
         if (user != null) {
-            return (ResponseEntity<?>) ResponseEntity.badRequest();
+            return Constant.StatusCode.ERROR.getMessage();
         } else {
             try {
                 Wallet wallet = walletRepository.save(modelToEntity(0L));
                 User user1 = userRepository.save(createUser(userRequest,wallet));
                 wallet.setUserId(user1.getUserId());
                 walletRepository.save(wallet);
-                return new ResponseEntity<String>(Constant.StatusCode.OK.getMessage(), HttpStatus.OK);
+                return Constant.StatusCode.OK.getMessage();
             } catch (Exception ex) {
-                return new ResponseEntity<String>(Constant.StatusCode.ERROR.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+                return Constant.StatusCode.ERROR.getMessage();
 
             }
         }
@@ -70,26 +69,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<List<UserResponseAll>> getUSer(String token) {
+    public List<UserResponseAll> getUSer(String token) {
         try {
             Long userId = Long.valueOf(JwtUltis.getUserId(token));
             List<User> list = userRepository.findAllByUserId(userId);
             if (!CollectionUtils.isEmpty(list)) {
-                return new ResponseEntity<List<UserResponseAll>>(Arrays.asList(mapEntityToModel(list.get(0))), HttpStatus.OK);
+                return Arrays.asList(mapEntityToModel(list.get(0)));
             }
 
         } catch (Exception ex) {
 
         }
-        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ArrayList<>();
     }
 
     private UserResponseAll mapEntityToModel(User data) {
         UserResponseAll result = new UserResponseAll();
         result.setEmail(data.getEmail());
-        result.setFullName(data.getName());
+        result.setFull_name(data.getName());
         result.setPassword(data.getPass());
-        result.setPhoneNumber(data.getPhone());
+        result.setPhone_number(data.getPhone());
         result.setUserId(Integer.valueOf(data.getUserId().toString()));
         result.setWalletId(data.getWalletId().toString());
 

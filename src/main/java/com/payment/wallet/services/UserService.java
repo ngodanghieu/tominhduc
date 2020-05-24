@@ -10,8 +10,8 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface UserService {
-    ResponseEntity<?> register(UserRequest userRequest);
+    String register(UserRequest userRequest);
     ResponseEntity<List<UserResponse>> login(UserLoginRequest userRequest);
 
-    ResponseEntity<List<UserResponseAll>> getUSer(String token);
+    List<UserResponseAll> getUSer(String token);
 }

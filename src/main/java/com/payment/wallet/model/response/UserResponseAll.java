@@ -6,9 +6,9 @@ public class UserResponseAll {
     @Property(name = "user_id")
     private Integer userId;
     @Property(name = "full_name")
-    private String fullName;
+    private String full_name;
     @Property(name = "phone_number")
-    private String phoneNumber;
+    private String phone_number;
     @Property(name = "password")
     private String password;
     @Property(name = "email")
@@ -32,20 +32,20 @@ public class UserResponseAll {
         this.userId = userId;
     }
 
-    public String getFullName() {
-        return fullName;
+    public String getFull_name() {
+        return full_name;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setFull_name(String full_name) {
+        this.full_name = full_name;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public String getPhone_number() {
+        return phone_number;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setPhone_number(String phone_number) {
+        this.phone_number = phone_number;
     }
 
     public String getPassword() {
