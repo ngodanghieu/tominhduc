@@ -13,5 +13,5 @@ public interface UserService {
     ResponseEntity<?> register(UserRequest userRequest);
     ResponseEntity<List<UserResponse>> login(UserLoginRequest userRequest);
 
-    ResponseEntity<List<UserResponseAll>> getUSer(Long userId);
+    ResponseEntity<List<UserResponseAll>> getUSer(String token);
 }

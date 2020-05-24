@@ -70,8 +70,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<List<UserResponseAll>> getUSer(Long userId) {
+    public ResponseEntity<List<UserResponseAll>> getUSer(String token) {
         try {
+            Long userId = Long.valueOf(JwtUltis.getUserId(token));
             List<User> list = userRepository.findAllByUserId(userId);
             if (!CollectionUtils.isEmpty(list)) {
                 return new ResponseEntity<List<UserResponseAll>>(Arrays.asList(mapEntityToModel(list.get(0))), HttpStatus.OK);

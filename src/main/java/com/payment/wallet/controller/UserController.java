@@ -29,7 +29,7 @@ public class UserController {
     }
 
     @GetMapping("users")
-    ResponseEntity<?> getUser(@RequestParam("user_id")  Long userId){
-        return userService.getUSer(userId);
+    ResponseEntity<?> getUser(@RequestParam("user_id")  String token){
+        return userService.getUSer(token);
     }
 }

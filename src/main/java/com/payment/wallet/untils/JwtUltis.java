@@ -23,6 +23,15 @@ public class JwtUltis {
                 .getBody();
     }
 
+    public static String getUserId(String token){
+        if (token == null || !token.startsWith(SecurityConstants.PREFIX)) return null;
+        // Decode
+        return  Jwts.parser()
+                .setSigningKey(SecurityConstants.SECRET)
+                .parseClaimsJws(token.replace(SecurityConstants.PREFIX, ""))
+                .getBody().getSubject();
+    }
+
     public static String generateToken(User user) {
         Claims claims = Jwts.claims().setSubject(user.getUserId().toString());
 //        claims.put("roles", roles);
