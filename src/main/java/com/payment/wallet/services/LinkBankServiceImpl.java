@@ -16,6 +16,7 @@ import com.payment.wallet.repository.TransactionRepository;
 import com.payment.wallet.repository.UserRepository;
 import com.payment.wallet.repository.WalletRepository;
 import com.payment.wallet.untils.Constant;
+import com.payment.wallet.untils.JwtUltis;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+
 
 @Service
 public class LinkBankServiceImpl implements LinkBankService {
@@ -63,7 +65,7 @@ public class LinkBankServiceImpl implements LinkBankService {
             List<Wallet> userSender = walletRepository.findAllByWalletId(paymentRequest.getSender_wallet_id());
             List<Wallet> Beneficiary = walletRepository.findAllByWalletId(paymentRequest.getReceiver_wallet_id());
 
-            if (!CollectionUtils.isEmpty(userSender) && !CollectionUtils.isEmpty(Beneficiary)) {
+            if (!CollectionUtils.isEmpty(userSender) && !CollectionUtils.isEmpty(Beneficiary) && paymentRequest.getAmount() <= userSender.get(0).getMoney()) {
                 transactionRepository.save(createTransaction(paymentRequest));
                 Float amount = userSender.get(0).getMoney() - paymentRequest.getAmount();
                 Wallet walletSender = userSender.get(0);
@@ -108,7 +110,7 @@ public class LinkBankServiceImpl implements LinkBankService {
         } else {
             try {
                 Wallet wallet = walletList.get(0);
-                Float amount = wallet.getMoney() + request.getAmount();
+                Float amount = wallet.getMoney() - request.getAmount();
                 wallet.setMoney(amount);
                 walletRepository.save(wallet);
                 return new ResponseEntity<String>(Constant.StatusCode.OK.getMessage(), HttpStatus.OK);
@@ -198,12 +200,13 @@ public class LinkBankServiceImpl implements LinkBankService {
         CardResponse cardResponse = new CardResponse();
         cardResponse.setBirthdate(linkBank.getBirthdate().toString());
         cardResponse.setCard_number(linkBank.getCard_number());
-        cardResponse.setExpire_date(linkBank.getExpire_date().toString());
+        cardResponse.setExpire_date(linkBank.getExpire_date() == null ? "" : linkBank.getExpire_date());
         cardResponse.setFull_name(linkBank.getName());
         cardResponse.setDebitcard_id(linkBank.getCard_number());
         cardResponse.setSex(linkBank.getSex());
         cardResponse.setStart_date(linkBank.getStart_date().toString());
         cardResponse.setTimestamp(linkBank.getTimestamp().toString());
+        cardResponse.setUser_id(linkBank.getUserId().toString());
 
         return cardResponse;
     }
@@ -211,12 +214,14 @@ public class LinkBankServiceImpl implements LinkBankService {
 
     private LinkBank modelToEntity(LinkBankRequest linkBankRequest) {
         LinkBank linkBank = new LinkBank();
-//        linkBank.setBirthdate(linkBankRequest.getBirthdate());
+        linkBank.setBirthdate(linkBankRequest.getBirthdate());
+        String userId = JwtUltis.getUserId(linkBankRequest.getUser_id());
         linkBank.setCard_number(linkBankRequest.getCard_number());
-        linkBank.setUserId(linkBankRequest.getUser_id());
+        linkBank.setUserId(Long.valueOf(userId));
         linkBank.setSex(linkBankRequest.getSex());
-        linkBank.setStart_date(new Date());
-        linkBank.setTimestamp(new Date());
+        linkBank.setStart_date(linkBankRequest.getStart_date());
+        linkBank.setTimestamp(linkBankRequest.getTimestamp());
+        linkBank.setName(linkBankRequest.getFull_name());
         return linkBank;
     }
 
@@ -226,6 +231,7 @@ public class LinkBankServiceImpl implements LinkBankService {
         transaction.setBeneficiary_id(paymentRequest.getReceiver_wallet_id());
         transaction.setSender_wallet_id(paymentRequest.getSender_wallet_id());
         transaction.setReason(paymentRequest.getMessage());
+        transaction.setWallet_id(paymentRequest.getReceiver_wallet_id());
         transaction.setTimestamp(new Date());
         return transaction;
     }

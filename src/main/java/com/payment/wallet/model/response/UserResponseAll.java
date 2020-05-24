@@ -4,7 +4,7 @@ import jdk.nashorn.internal.objects.annotations.Property;
 
 public class UserResponseAll {
     @Property(name = "user_id")
-    private Integer userId;
+    private Integer user_id;
     @Property(name = "full_name")
     private String full_name;
     @Property(name = "phone_number")
@@ -18,18 +18,18 @@ public class UserResponseAll {
     @Property(name = "photo")
     private String photo;
     @Property(name = "wallet_id")
-    private String walletId;
+    private String wallet_id;
     @Property(name = "6G_reference")
     private Object _6GReference;
     @Property(name = "role")
     private String role;
 
-    public Integer getUserId() {
-        return userId;
+    public Integer getUser_id() {
+        return user_id;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUser_id(Integer user_id) {
+        this.user_id = user_id;
     }
 
     public String getFull_name() {
@@ -80,12 +80,12 @@ public class UserResponseAll {
         this.photo = photo;
     }
 
-    public String getWalletId() {
-        return walletId;
+    public String getWallet_id() {
+        return wallet_id;
     }
 
-    public void setWalletId(String walletId) {
-        this.walletId = walletId;
+    public void setWallet_id(String wallet_id) {
+        this.wallet_id = wallet_id;
     }
 
     public Object get_6GReference() {

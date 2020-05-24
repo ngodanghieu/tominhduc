@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -41,7 +42,7 @@ public class UserServiceImpl implements UserService {
         } else {
             try {
                 Wallet wallet = walletRepository.save(modelToEntity(0L));
-                User user1 = userRepository.save(createUser(userRequest,wallet));
+                User user1 = userRepository.save(createUser(userRequest, wallet));
                 wallet.setUserId(user1.getUserId());
                 walletRepository.save(wallet);
                 return Constant.StatusCode.OK.getMessage();
@@ -72,9 +73,17 @@ public class UserServiceImpl implements UserService {
     public List<UserResponseAll> getUSer(String token) {
         try {
             Long userId = Long.valueOf(JwtUltis.getUserId(token));
-            List<User> list = userRepository.findAllByUserId(userId);
+//            List<User> list = userRepository.findAllByUserId(userId);
+            List<User> list = userRepository.findAll();
             if (!CollectionUtils.isEmpty(list)) {
-                return Arrays.asList(mapEntityToModel(list.get(0)));
+
+//                return Arrays.asList(mapEntityToModel(list.get(0)));
+                List<UserResponseAll> result = new ArrayList<>();
+                for (User x : list) {
+                    UserResponseAll userResponseAll = mapEntityToModel(x);
+                    result.add(userResponseAll);
+                }
+                return result;
             }
 
         } catch (Exception ex) {
@@ -89,13 +98,13 @@ public class UserServiceImpl implements UserService {
         result.setFull_name(data.getName());
         result.setPassword(data.getPass());
         result.setPhone_number(data.getPhone());
-        result.setUserId(Integer.valueOf(data.getUserId().toString()));
-        result.setWalletId(data.getWalletId().toString());
+        result.setUser_id(Integer.valueOf(data.getUserId().toString()));
+        result.setWallet_id(data.getWalletId().toString());
 
         return result;
     }
 
-    private User createUser(UserRequest userRequest,Wallet wallet) {
+    private User createUser(UserRequest userRequest, Wallet wallet) {
         User user = new User();
         user.setEmail(userRequest.getEmail());
         user.setPhone(userRequest.getPhonenumber());

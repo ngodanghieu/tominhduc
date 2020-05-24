@@ -1,5 +1,7 @@
 package com.payment.wallet.entities;
 
+import org.springframework.stereotype.Component;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

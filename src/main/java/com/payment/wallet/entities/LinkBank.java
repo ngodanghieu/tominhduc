@@ -26,27 +26,19 @@ public class LinkBank {
     @Column(name = "card_number")
     private String card_number;
     @Column(name = "start_date")
-    private Date start_date;
+    private String start_date;
 
     @Column(name = "expire_date")
-    private Date expire_date;
+    private String expire_date;
 
     @Column(name = "birthdate")
-    private Date birthdate;
+    private String birthdate;
 
     @Column(name = "sex")
     private String sex;
 
     @Column(name = "timestamp")
-    private Date timestamp;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+    private String timestamp;
 
     public Long getLink_bank_id() {
         return link_bank_id;
@@ -60,8 +52,16 @@ public class LinkBank {
         return userId;
     }
 
-    public void setUserId(Long user_id) {
-        this.userId = user_id;
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getCard_number() {
@@ -72,27 +72,27 @@ public class LinkBank {
         this.card_number = card_number;
     }
 
-    public Date getStart_date() {
+    public String getStart_date() {
         return start_date;
     }
 
-    public void setStart_date(Date start_date) {
+    public void setStart_date(String start_date) {
         this.start_date = start_date;
     }
 
-    public Date getExpire_date() {
+    public String getExpire_date() {
         return expire_date;
     }
 
-    public void setExpire_date(Date expire_date) {
+    public void setExpire_date(String expire_date) {
         this.expire_date = expire_date;
     }
 
-    public Date getBirthdate() {
+    public String getBirthdate() {
         return birthdate;
     }
 
-    public void setBirthdate(Date birthdate) {
+    public void setBirthdate(String birthdate) {
         this.birthdate = birthdate;
     }
 
@@ -104,11 +104,11 @@ public class LinkBank {
         this.sex = sex;
     }
 
-    public Date getTimestamp() {
+    public String getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Date timestamp) {
+    public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
 }

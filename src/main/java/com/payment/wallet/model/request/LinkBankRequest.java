@@ -7,7 +7,7 @@ public class LinkBankRequest {
     private String expire_date;
     private String birthdate;
     private String sex;
-    private Long user_id;
+    private String user_id;
     private String timestamp;
     private String bank_id;
     private String id_number;
@@ -60,11 +60,11 @@ public class LinkBankRequest {
         this.sex = sex;
     }
 
-    public Long getUser_id() {
+    public String getUser_id() {
         return user_id;
     }
 
-    public void setUser_id(Long user_id) {
+    public void setUser_id(String user_id) {
         this.user_id = user_id;
     }
 

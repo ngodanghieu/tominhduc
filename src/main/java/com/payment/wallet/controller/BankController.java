@@ -8,6 +8,7 @@ import com.payment.wallet.model.request.WithDrawalRequest;
 import com.payment.wallet.model.response.CardResponse;
 import com.payment.wallet.model.response.WalletResponse;
 import com.payment.wallet.services.LinkBankService;
+import com.payment.wallet.untils.JwtUltis;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,8 +38,8 @@ public class BankController {
     }
 
     @GetMapping("debit_card")
-    ResponseEntity<List<CardResponse>> getCard(@RequestParam("user_id") Long userId){
-        return linkBankService.getCard(userId);
+    ResponseEntity<List<CardResponse>> getCard(@RequestParam("user_id") String userId){
+        return linkBankService.getCard(Long.valueOf(JwtUltis.getUserId(userId)));
     }
     @GetMapping("wallet")
     ResponseEntity<List<WalletResponse>> getWallet(@RequestParam("wallet_id") Long walletId){
